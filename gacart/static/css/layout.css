@@ -1,0 +1,127 @@
+body{
+    background-color: rgb(255, 255, 255);
+}
+.ga-brand{
+
+font-family: 'Gilda Display';
+font-style: normal;
+font-weight: 400;
+font-size: 52px;
+/* 32 */
+line-height: 38px;
+padding-left: 120px;
+color: #C69999;
+
+}
+.category{
+    font-family: 'Hind Kochi';
+font-style: normal;
+font-weight: 400;
+font-size: 25px;
+line-height: 26px;
+
+color: #C69999;
+}
+.user-logo{
+    width: 39px;
+}
+.search-logo{
+    width: 39px;
+    position: relative;
+    margin-top: -10px;
+}
+.sbox{
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid #aaa;
+    outline: none;
+    font-size: 20px;
+    font-weight: 400;
+   
+    width: 200px;
+    transition: .5s;
+     color: rgb(38, 28, 28);
+}
+.search-btn{
+    padding-left: 10px;
+}
+.search-btn{
+    position: relative;
+    right: 20px;
+}
+.round{
+position: relative;
+left: 35px;
+width: 28px;
+height: 28px;
+
+border-radius: 29px;
+
+background: rgba(238, 123, 123, 0.58);
+
+}
+.cart-item-count{
+    padding-left: 8px;
+    padding-top: 5px;
+}
+.cart-logo{
+    position: relative;
+    bottom: 13px;
+}
+.wishlist{
+    font-size: 25px;
+    color: rgb(115, 109, 109);
+}
+.home-list li {
+    list-style: none;
+    font-size: 24px;
+    padding-top: 12px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+.home-list{
+    font-family: sans-serif;
+}
+
+.filterc li {
+    font-size: 24px;
+    list-style: none;
+    display: inline-block;
+    color: #140303;
+    margin-right: 35px;
+    position: relative;
+    cursor: pointer;
+    
+}
+.home-filter{
+
+    font-size: 40px;
+    font-family: 'Gilda Display';
+}
+.banner img{
+  padding-top: 100px;
+  background-color: transparent;
+  padding-bottom: 100px;
+}
+
+/* .flt{
+    float: left;
+} */
+.pro{
+    width: 415px;
+    height: 360px;
+
+}
+.ali{
+    padding-top: 100px;
+}
+.arrow{
+    width: 20px;
+
+}
+.cartpro{
+    width: 315px;
+    height: 360px;
+
+
+}
