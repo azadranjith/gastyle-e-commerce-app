@@ -24,7 +24,7 @@ class AdmiLogin(models.Model):
 class Userdata(models.Model):
     uname = models.CharField(max_length=254)
     upassword =  models.CharField(max_length=16)
-    age = models.IntegerField()
+    age = models.IntegerField(blank=True)
 
     def user_auth(self,Aname,Apass):
         k = Userdata.objects.filter(uname = Aname).count()

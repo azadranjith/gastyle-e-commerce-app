@@ -24,7 +24,7 @@
             <header class="card-header">
                 <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
                     <i class="icon-control fa fa-chevron-down"></i>
-                    <h6 class="title">Categories</h6>
+                    <h6 class="title" style="color: #c69999;">Categories</h6>
                 </a>
             </header>
             <div class="filter-content collapse show" id="collapse_1" style="">
@@ -44,7 +44,7 @@
             <header class="card-header">
                 <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
                     <i class="icon-control fa fa-chevron-down"></i>
-                    <h6 class="title">Sizes </h6>
+                    <h6 class="title"style="color: #c69999;">Sizes </h6>
                 </a>
             </header>
             <div class="filter-content collapse show" id="collapse_4" style="">
@@ -76,7 +76,7 @@
             <header class="card-header">
                 <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
                     <i class="icon-control fa fa-chevron-down"></i>
-                    <h6 class="title">Price range </h6>
+                    <h6 class="title" style="color: #c69999;">Price range </h6>
                 </a>
             </header>
             <div class="filter-content collapse show" id="collapse_3" style="">
@@ -109,7 +109,7 @@
                         </select>
                     </div>
                     </div> <!-- form-row.// -->
-                    <button class="btn btn-block btn-primary">Apply</button>
+                    <button class="btn btn-block btn-primary" style="background-color: #c69999;border: #c69999;">Apply</button>
                 </div><!-- card-body.// -->
             </div>
         </article> <!-- filter-group .// -->
@@ -143,8 +143,14 @@
                             <span class="price">${{ product.price }}</span>
                         </div> <!-- price-wrap.// -->
                     </div>
-                    <a href="#" class="btn btn-block btn-primary">Add to cart </a>
+                    {% if product.stock < 1 %}
+                    <h5 class = "text-danger" >out of stock </h5>
+                    {% else%}
+
+                    <a href="{% url 'add_cart' product.id %}" class="btn btn-block btn-danger cart ">Add to cart </a>
                     <!-- btn-success for the added to cart products -->
+                    {% endif %}
+
                 </figcaption>
             </figure>
         </div> <!-- col.// -->

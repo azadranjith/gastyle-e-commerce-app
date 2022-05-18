@@ -1,6 +1,4 @@
 
-
-from unicodedata import category
 from category.models import Category
 
 def menu_links(request):#takes a request and return dictionary 

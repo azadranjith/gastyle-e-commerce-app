@@ -56,17 +56,18 @@
                     </ul>
                   </div>
             </span>
-            <a href="#">
+            
             <div class="nav-item pe-4">
-                
+             
                 <div class="dropdown ">
+                  <a href="{% url 'cart' %}">
+                   <div class="round text-wrap" ><h6 class="cart-item-count">{{ items }}</h6></div> 
                     
-                    <div class="round text-wrap" ><h6 class="cart-item-count">1</h6></div>
-                    <img class="user-logo cart-logo dropdown-toggle" src="{% static 'images/cart.png' %}" alt="" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                
+                   <img class="user-logo cart-logo dropdown-toggle" src="{% static 'images/cart.png' %}" alt="">
+                   
                   </div>
-              
-                  
+                </a>
+                   
             </div>
         </a>
             

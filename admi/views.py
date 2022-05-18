@@ -1,6 +1,6 @@
 
 from django.shortcuts import render,redirect
-
+from store.models import Product
 # Create your views here.
 from django import forms
 
@@ -117,12 +117,12 @@ def sign_up(request):
     if request.method == "POST":
         n = request.POST['name']
         p = request.POST['password']
-        a = request.POST['age'] 
+        #a = request.POST['age'] 
         cn = request.POST['cpassword']
         if p == cn:
             if Userdata.objects.filter(uname = n).count():
                 return render(request,'admi/sign.html',{'form':Sign(),'msg':"user_name already exist"})
-            o = Userdata.objects.create(uname = n, upassword = p, age = a)
+            o = Userdata.objects.create(uname = n, upassword = p,age = 16 )
             o.save()
             return redirect('admi:dashboard')  
         else:
@@ -132,5 +132,9 @@ def sign_up(request):
 
 def dashboard(request):
     if 'user_username' in request.session:
-        return render(request,'home.html',)
+        products = Product.objects.all().filter(is_available = True)
+    
+
+        context = {'products':products}
+        return render(request,'home.html',context)
     return redirect('admi:userlogin')
