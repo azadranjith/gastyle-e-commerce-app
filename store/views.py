@@ -1,10 +1,16 @@
 
+from ast import keyword
+from urllib import response
 from django.shortcuts import render, get_object_or_404
 from carts.models import CartItem
 from category.models import Category
 from carts.views import _cart_id
+#for paginator
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from store.models import Product
+
+from django.db.models import  Q
 
 from django.http import HttpResponse
 
@@ -17,12 +23,22 @@ def store(request,category_slug = None):
     if category_slug != None:
         categories = get_object_or_404(Category,slug = category_slug)
         all_products = Product.objects.filter(category = categories, is_available = True)
+
+        paginator = Paginator(all_products,1)
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
         product_count = Product.objects.filter(category = categories, is_available = True).count
     else:
-        all_products = Product.objects.all()# included the not available
+        
+        all_products = Product.objects.all().order_by('id')# included the not available
+        paginator = Paginator(all_products,6)
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
         product_count = Product.objects.all().count
+
+
     context = {
-        'products':all_products,
+        'products':paged_products,
         'product_count':product_count   
     }
     return render(request,'store/store.html',context)
@@ -43,3 +59,18 @@ def product_detail(request,category_slug,product_slug):
     }
     return render(request,'store/product_detail.html',context)
 
+def search(request):
+    print("hi")
+    if 'keyword' in request.GET:
+        print("hi")
+        keyword = request.GET['keyword']
+        products = Product.objects.order_by('product_name').filter(Q(product_name__icontains = keyword) | Q(description__icontains = keyword))
+        product_count = products.count
+    else:
+        products = None
+        product_count = 0
+    context = {
+        'products':products,
+        'product_count':product_count
+    }
+    return render(request,'store/store.html',context)

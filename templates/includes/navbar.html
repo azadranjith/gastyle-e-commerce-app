@@ -40,8 +40,9 @@
               
             </ul>
 
-            <form class="d-flex ">
-                <input class="  me-2 sbox" type="search" placeholder="Search" aria-label="Search">
+            <form action = "{% url 'search' %}" method = "get" class="d-flex ">
+            
+                <input class="  me-2 sbox" type="search" placeholder="Search" aria-label="Search" required name="keyword">
                 <button class="btn  search-btn" style="height: 2rem;" type="submit"><img class = "search-logo" src="{% static 'images/searching.png' %}" alt=""></button>
             </form>
             <span class="nav-item pe-4">
