@@ -40,7 +40,7 @@
                       <option value="" disabled selected >Choose color</option>
                       {% for i in single_product.variation_set.colors %}   
                       <!-- this will get all objects from variatinos table  -->
-                      <option value="{{ i.variation_value | lower}}">{{ i.variation_value | capfirst}}</option> 
+                      <option value="{{ i.variation_value | lower}}">{{ i.variation_value | capfirst }}</option> 
                       {% endfor %}
                     </select>
                   </div>

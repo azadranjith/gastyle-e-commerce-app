@@ -1,97 +1,115 @@
 {% load static %}
 <nav class="navbar navbar-expand-xl navbar-light " style="min-height: 100px;">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
-            aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a href = "{% url 'home' %}" class=" navbar-brand " href="#"><span  >gaStyle </span></a>
-        <button><a href="{% url 'admi:userlout' %}">logout</a></button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav  mx-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                   <div class="dropdown ">
-                       
-                          <a class="nav-link active" data-bs-toggle="dropdown" aria-expanded="false" aria-current="page" href="#"><span class="category me-4" > Categories</span></a>
-                       
-                    
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="{% url 'store' %}">ALL</a>
-                      {% for category in links %} 
-                      <!-- the dictinory 'links' is from context_processors and configured at settings file templates -->
-                      <a class="dropdown-item" href="{% url 'products_by_category' category.slug %}">{{ category.category_name }} </a>
-                                              <!-- href = "{{ category.get_url }}" -->
-                      {% endfor %}
-                    </div>
-                  </div>  
-                    <!-- <a class="nav-link active" aria-current="page" href="#"><span class="category me-4" > Categories</span></a> -->
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><span class="category me-4" > New Arrivals</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><span class="category me-4" > Accessories</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><span class="category me-4" > Clothes</span></a>
-                </li>
-               
-               
-              
-            </ul>
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
+      aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a href="{% url 'home' %}" class=" navbar-brand " href="#"><span>gaStyle </span></a>
+    <button><a href="{% url 'admi:userlout' %}">logout</a></button>
+    
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav  mx-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <div class="dropdown ">
 
-            <form action = "{% url 'search' %}" method = "get" class="d-flex ">
-            
-                <input class="  me-2 sbox" type="search" placeholder="Search" aria-label="Search" required name="keyword">
-                <button class="btn  search-btn" style="height: 2rem;" type="submit"><img class = "search-logo" src="{% static 'images/searching.png' %}" alt=""></button>
-            </form>
-            <span class="nav-item pe-4">
-                <div class="dropdown ">
-                    <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                      account
-                    </button> -->
-                    <img class="user-logo dropdown-toggle" src="{% static 'images/user.png' %}" alt="" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
-                      <a class="dropdown-item" href="#">account</a></li>
-                      <a class="dropdown-item" href="#">orders</a></li>
-                    </ul>
-                  </div>
-            </span>
-            
-            <div class="nav-item pe-4">
-             
-                <div class="dropdown ">
-                  <a href="{% url 'cart' %}">
-                   <div class="round text-wrap" ><h6 class="cart-item-count">{{ items }}</h6></div> 
-                    
-                   <img class="user-logo cart-logo dropdown-toggle" src="{% static 'images/cart.png' %}" alt="">
-                   
-                  </div>
-                </a>
-                   
+            <a class="nav-link active" data-bs-toggle="dropdown" aria-expanded="false" aria-current="page"
+              href="#"><span class="category me-4"> Categories</span></a>
+
+
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'store' %}">ALL</a>
+              {% for category in links %}
+              <!-- the dictinory 'links' is from context_processors and configured at settings file templates -->
+              <a class="dropdown-item" href="{% url 'products_by_category' category.slug %}">{{ category.category_name }} </a>
+              <!-- href = "{{ category.get_url }}" -->
+              {% endfor %}
             </div>
-        </a>
-            
-           
-            
-            <span class="nav-item ps-4 pe-4">
-                <div class="dropdown ">
-                    <a class="btn wishlist " href="">
-                      wishlist <img class="user-logo " src="{% static 'images/wishlist.png'%}" alt="">
-                    </a>
+          </div>
+          <!-- <a class="nav-link active" aria-current="page" href="#"><span class="category me-4" > Categories</span></a> -->
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#"><span class="category me-4"> New Arrivals</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#"><span class="category me-4"> Accessories</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#"><span class="category me-4"> Clothes</span></a>
+        </li>
 
-                    
 
-                </div>
-            </span>
 
-          
+      </ul>
+
+      <form action="{% url 'search' %}" method="get" class="d-flex ">
+
+        <input class="  me-2 sbox" type="search" placeholder="Search" aria-label="Search" required name="keyword">
+        <button class="btn  search-btn" style="height: 2rem;" type="submit"><img class="search-logo"
+            src="{% static 'images/searching.png' %}" alt=""></button>
+      </form>
+      <span class="nav-item me-4">
+        <div class="dropdown me-4">
+          <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropbtn" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            account
+          </button> -->
+          <img class="user-logo dropdown-toggle " src="{% static 'images/user.png' %}" alt="" id="dropbtn"
+            data-bs-toggle="dropdown" aria-expanded="false">
+          <ul class="dropdown-menu" aria-labelledby="dropbtn">
+            {% if user.id is None %}
+            <li><a class="dropdown-item" href="{% url 'login' %}">LOGIN</a></li>
+            <a class="dropdown-item" href="{% url 'register' %}">SIGNUP</a>
+            {% else %}
+            <a class="dropdown-item" href="#">{{ user.first_name | upper }}</a>
+            <a class="dropdown-item" href="{% url 'logout' %}">LOG OUT</a>
+
+            {% endif %}
+
+
+
+
+          </ul>
         </div>
+      </span>
+
+      
+
+      <div class="nav-item pe-4">
+
+        <div class="dropdown ">
+          <a href="{% url 'cart' %}">
+            <div class="round text-wrap">
+              <h6 class="cart-item-count">{{ items }}</h6>
+            </div>
+
+            <img class="user-logo cart-logo dropdown-toggle" src="{% static 'images/cart.png' %}" alt="">
+
+        </div>
+        </a>
+
+      </div>
+      </a>
+
+
+
+      <span class="nav-item ps-4 pe-4">
+        <div class="dropdown ">
+          <a class="btn wishlist " href="">
+            wishlist <img class="user-logo " src="{% static 'images/wishlist.png'%}" alt="">
+          </a>
+
+
+
+        </div>
+      </span>
+
+
     </div>
+  </div>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-crossorigin="anonymous"></script>
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <!-- <header class="section-header">
 <nav class="navbar p-md-0 navbar-expand-sm navbar-light border-bottom">
 <div class="container">

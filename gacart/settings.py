@@ -143,6 +143,12 @@ MEDIA_URL = '/media/' # path to the directory that will hold user-uploaded files
 
 MEDIA_ROOT = BASE_DIR/'media'
 
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    50: 'critical',
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

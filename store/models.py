@@ -32,9 +32,11 @@ class VariationManager(models.Manager):
 
     def sizes(self):
          return super(VariationManager,self).filter(variation_category='size', is_active=True)
-
+    
 
 class Variation(models.Model):
+    class Meta:
+        ordering = ['variation_category']
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
