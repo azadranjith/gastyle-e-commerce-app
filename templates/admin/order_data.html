@@ -1,0 +1,60 @@
+
+{% extends 'admin/layout.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+<table id="table_id" class="display table table-striped table-hover table-bordered">
+
+
+
+
+
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>ORDER NUMBER</th>
+            <th>FULL NAME</th>
+            <th>PHONE</th>
+            <th>EMAIL</th>
+            <th>CITY</th>
+            <th>ORDER TOTAL</th>
+            <th>TAX</th>
+            <th>STATUS</th>
+            <th>IS ORDERED</th>
+            <th>CREATED AT</th>
+            <th></th>         
+        </tr>
+    </thead>
+    
+        <tbody>
+            {% for i in order_data %}   
+            <tr>
+                <td>1</td>  
+                <td>{{ i.order_number }}</td>
+                <td>{{ i.full_name }}</td>
+                <td>{{ i.phone }}</td>
+                <td>{{ i.email }}</td>
+                <td>{{ i.city}}</td>
+                <td>{{ i.order_total }}</td>  
+                <td>{{ i.tax}}</td>
+                <td>{{ i.status}}</td>
+                <td>{{ i.is_ordered}}</td>
+                <td>{{ i.created_at}}</td>
+                <td>
+                    <a href="#" class="view " title="View" data-toggle="tooltip"><i class="fa fa-eye btn-success">&#xE417;</i></a>
+                    <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons btn-danger fa fa-bars">&#xE254;</i></a>
+                    <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                </td>
+            </tr>
+            {% endfor %}
+           
+        </tbody>
+    
+</table>
+
+
+{% endblock %}  

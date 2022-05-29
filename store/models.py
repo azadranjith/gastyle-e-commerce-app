@@ -52,3 +52,13 @@ class Variation(models.Model):
 
     def __str__(self):
         return self.variation_value
+
+
+class ProductGallery(models.Model):
+    product = models.ForeignKey(Product,default=None,on_delete=models.CASCADE)
+
+    image = models.ImageField(upload_to='store/products')  
+
+    def __str__(self):
+        return self.product.product_name    
+

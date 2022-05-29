@@ -12,11 +12,21 @@
       <div class="row no-gutters">
         <aside class="col-md-6">
           <article class="gallery-wrap">
-            <div class="img-big-wrap">
-              <a href="#"><img src="{{ single_product.images.url }}"></a>
+            <div class="img-big-wrap mainImage ">
+             <center> <img src="{{ single_product.images.url }}"></center>
             </div> <!-- img-big-wrap.// -->
 
           </article> <!-- gallery-wrap .end// -->
+
+          <ul class="thumb">
+            <li>
+              <a href="{{ single_product.images.url }}" target="mainImage"><img src="{{ single_product.images.url }}" alt="product image"></a>
+              {% for i in product_gallery %}
+              <a href="{{ i.image.url }}" target="mainImage"><img src="{{ i.image.url }}" alt="product image"></a>
+              {% endfor %}
+            </li>
+          </ul>
+
         </aside>
         <main class="col-md-6 border-left">
           <article class="content-body">
@@ -37,39 +47,39 @@
                   <h6>Choose Color</h6>
                   <div>
                     <select name="color" required id="" class="form-control">
-                      <option value="" disabled selected >Choose color</option>
-                      {% for i in single_product.variation_set.colors %}   
+                      <option value="" disabled selected>Choose color</option>
+                      {% for i in single_product.variation_set.colors %}
                       <!-- this will get all objects from variatinos table  -->
-                      <option value="{{ i.variation_value | lower}}">{{ i.variation_value | capfirst }}</option> 
+                      <option value="{{ i.variation_value | lower}}">{{ i.variation_value | capfirst }}</option>
                       {% endfor %}
                     </select>
                   </div>
                 </div>
               </div> <!-- row.// -->
               <div class="row">
-                <div class="item-option-select">    
+                <div class="item-option-select">
                   <h6>Select Size</h6>
                   <div>
                     <select name="size" required id="" class="form-control">
-                      <option value="" disabled selected >Choose size</option>
-                      {% for i in single_product.variation_set.sizes %}   
+                      <option value="" disabled selected>Choose size</option>
+                      {% for i in single_product.variation_set.sizes %}
                       <!-- this will get all objects from variatinos table  -->
-                      <option value="{{ i.variation_value | lower}}">{{ i.variation_value | capfirst }}</option> 
+                      <option value="{{ i.variation_value | lower}}">{{ i.variation_value | capfirst }}</option>
                       {% endfor %}
                     </select>
                   </div>
-                 
+
                 </div>
               </div> <!-- row.// -->
               <hr>
-              {% if single_product.stock <= 0 %} 
-              <h5 class="text-danger">out of stock </h5>
-              {% else %}
+              {% if single_product.stock <= 0 %} <h5 class="text-danger">out of stock </h5>
+                {% else %}
                 <a href="{% url 'cart' %}" class="btn  btn-primary  "> <span class="text">View cart</span> <i
                     class="fas fa-eye"></i></a>
-                <button type="submit" class="btn  btn-danger cart "> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i></button>
-              
-              {% endif %}
+                <button type="submit" class="btn  btn-danger cart "> <span class="text">Add to cart</span> <i
+                    class="fas fa-shopping-cart"></i></button>
+
+                {% endif %}
             </form>
           </article> <!-- product-info-aside .// -->
         </main> <!-- col.// -->

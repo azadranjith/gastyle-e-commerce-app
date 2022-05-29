@@ -1,5 +1,7 @@
 from django.contrib import admin
-from . models import Account
+from . models import Account,UserProfile
+
+from django.utils.html import format_html
 from django.contrib.auth.admin import UserAdmin #to make password read only
 # Register your models here.
 
@@ -13,4 +15,13 @@ class AccountAdmin(UserAdmin):
     filter_horizontal = ()
     list_filter = () 
     fieldsets = ()
-admin.site.register(Account,AccountAdmin)   
+
+# class UserProfileAdmin(admin.ModelAdmin):
+#     def thumbnail(self,object):
+#         return format_html('<img src="{}" width="30" style="border-radius:50%;">'.format(object.profile_picture.url))
+#     thumbnail.short_description = 'Profile Picture'
+#     list_display = ('thumbnail','user','state','city','country')  
+    
+ 
+admin.site.register(Account,AccountAdmin)
+admin.site.register(UserProfile)   

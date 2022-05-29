@@ -177,7 +177,7 @@ def remove_item(request,cart_item_id):
 
     return redirect('cart')
 
-@login_required(login_url='login')
+@login_required(login_url='login')#when not loged in redircted to login_url and the url will have next keyword
 def checkout(request,total = 0,quantity = 0,cart_items = None):
     try:
         tax = 0

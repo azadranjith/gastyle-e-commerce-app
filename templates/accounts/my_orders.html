@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"
+integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">  
+
+
+<section class="section-conten padding-y bg">
+
+    <div class="container">
+        <div class="row">
+            {% include 'includes/dashboard_sidebar.html' %}
+            <main class="col-md-9">
+                <article class="card">
+                    <header class="card-header">
+                        <strong class="d-inline-block mr-3">Your Order history </strong>
+                       
+                    </header>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <table id="table_order" class="display table table-striped table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                           
+                                            <th>ORDER #</th>
+                                            <th>BILLING NAME</th>
+                                            <th>PHONE</th>
+                                            <th>TOTAL</th>
+                                            <th>DATE</th>
+                                          
+                                                    
+                                        </tr>
+                                    </thead>
+                                    
+                                        <tbody>
+                                            {% for i in order_data %}   
+                                            <tr>
+                                              
+                                                <td><a href="{% url 'order_detail' i.order_number %}">{{ i.order_number }}</a></td>
+                                                <td>{{ i.full_name }}</td>
+                                                <td>{{ i.phone }}</td>
+                                                <td>{{ i.order_total }}</td> 
+                                                <td>{{ i.created_at}}</td>
+                                                
+                                            </tr>
+                                            {% endfor %}
+                                        
+                                        </tbody>
+                                    
+                                </table>
+                                
+                            </div>
+
+                        </div> <!-- row.// -->
+                    </div> <!-- card-body .// -->
+
+                </article> <!-- order-group.// -->
+            </main>
+        </div> <!-- row.// -->
+    </div>
+
+
+</section>
+
+
+<script>
+    $(document).ready(function () {
+        $('#table_order').DataTable();
+    });
+</script>
+
+
+
+
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+{% endblock %}

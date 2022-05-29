@@ -11481,17 +11481,19 @@ body {
 }
 
 .sb-sidenav-dark {
-  background-color: #212529;
+  background-color:  red;
+  background-image: linear-gradient(180deg,#5f75a1 10%,#a89e9e 100%);
   color: rgba(255, 255, 255, 0.5);
+  
 }
 .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.45);
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.9);
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link .sb-nav-link-icon {
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.5);
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link .sb-sidenav-collapse-arrow {
   color: rgba(255, 255, 255, 0.25);
@@ -11506,7 +11508,7 @@ body {
   color: #fff;
 }
 .sb-sidenav-dark .sb-sidenav-footer {
-  background-color: #343a40;
+  background-color: #a39da4;
 }
 
 .sb-sidenav-light {
@@ -11698,4 +11700,8 @@ body {
   width: 20px !important;
   font-size: 0.75rem;
   border-radius: 0.25rem !important;
+}
+
+.border-left-primary {
+  border-left: 0.25rem solid #4e73df!important;
 }

@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+import email
+import re
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import RegistrationForm
-from .models import Account
+from .forms import RegistrationForm, UserForm, UserProfileForm
+from .models import Account, UserProfile  
 from django.contrib import messages
 
 from django.contrib import auth 
@@ -9,8 +11,11 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
 from carts.models import Cart,CartItem
+import requests
 
 from carts.views import _cart_id
+
+from orders.models import Order, OrderProduct
 # Create your views here.
 def register(request):
 
@@ -92,8 +97,34 @@ def login(request):
               
                 pass
             
-            auth.login(request,user)
-            return redirect('home')
+            auth.login(request,user)         #while checking out without login it prompts login page with next key(wich has the previous url after ?next where we came and ie next want go there next) on url 
+           
+               #to go to REFERER (parent url) we need to use requests lib (pip install requests)
+
+            url = request.META.get('HTTP_REFERER')
+
+           
+            #install requests lib
+            try:
+                query = requests.utils.urlparse(url).query
+         
+                #print(query)
+                # we get this next=/cart/checkout/
+
+
+                params = dict(x.split('=') for x in query.split('&')) #split the '=' and made next as a key and rest as value 
+            
+                
+                # print( params)
+                # {'next': '/cart/checkout/'}
+
+
+                if 'next' in params:
+                    next_page = params['next']
+                    return redirect (next_page)
+            except:
+                
+                return redirect('dashboard') 
 
         else:
             messages.error(request,'invalid login credentials')
@@ -109,4 +140,113 @@ def logout(request):
 
 @login_required(login_url = 'login')
 def dashboard(request):
-    return render(request,'dashboard.html')
+    orders = Order.objects.order_by('-created_at').filter(user = request.user,is_ordered = True)
+
+
+    orders_count = orders.count()
+
+    user_profile = UserProfile.objects.get(user=request.user)
+
+    context = {
+        'orders_count':orders_count,
+        'user_profile':user_profile,
+    }
+    return render(request,'accounts/dashboard.html',context)
+
+
+@login_required(login_url='login')  
+def my_orders(request):
+    orders = Order.objects.order_by('-created_at').filter(user = request.user,is_ordered = True)
+
+    orders_count = orders.count()
+
+    context = {
+        'orders_count':orders_count,
+        'order_data':orders
+    }
+    return render(request,'accounts/my_orders.html',context)  
+
+
+
+@login_required(login_url='login')  
+def edit_profile(request):
+    print("hi")
+    userprofile = get_object_or_404(UserProfile,user=request.user)
+    print("hello")
+    if request.method == 'POST':
+
+        user_form = UserForm(request.POST,instance=request.user)#passing this instance bcz we are editing this form ,,ie to update the profile without creating a new one
+
+        profile_form = UserProfileForm(request.POST,request.FILES,instance=userprofile) #request.FILES is for uploading file
+
+        if user_form.is_valid() and profile_form.is_valid():
+            
+            user_form.save()
+        
+            profile_form.save()
+    
+
+            messages.success(request,'Your profile has been updated')
+            return redirect('edit_profile')   
+    else:
+        user_form = UserForm(instance=request.user)
+
+        profile_form = UserProfileForm(instance=userprofile)
+    context = {
+            'user_form': user_form,
+            'profile_form':profile_form,
+            'userprofile':userprofile,
+        }
+    return render(request,'accounts/edit_profile.html',context)
+
+
+@login_required(login_url='login')   
+def change_password(request):
+
+    if request.method == "POST":
+        
+        current_password = request.POST['current_password']
+
+        new_password = request.POST['new_password']
+
+        confirm_password = request.POST['confirm_password']
+
+        if new_password == confirm_password:  
+
+            user = auth.authenticate(email=request.user.email,password = current_password)
+            #standerd way is success = current_user.check_passsword(current_passsword)
+
+            if user is not None:
+                print('it worked')
+                current_user = Account.objects.get(email=request.user.email)
+                current_user.set_password(new_password)  
+                current_user.save()     
+                messages.success(request,'password updated')
+                       
+            else:
+                messages.error(request,'confirm your current password')
+                return redirect('change_password')  
+        else:
+            messages.error(request,'Password does not match')
+            return redirect('change_password') 
+
+
+    return render(request,'accounts/change_password.html')
+
+def order_detail(request,order_id):
+
+    order_detail = OrderProduct.objects.filter(order__order_number=order_id)#we are getting order number from Order table via __ bcz oder is ForiegnKey of Order table
+
+    order = Order.objects.get(order_number=order_id)  
+
+    subtotal = 0 
+    for i in order_detail:
+        
+        subtotal += i.product_price * i.quantity 
+
+    context = {
+        'order_detail':order_detail,
+        'order':order,
+        'subtotal':subtotal
+    }
+    return render(request,'accounts/order_detail.html',context)  

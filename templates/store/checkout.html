@@ -16,8 +16,9 @@
                     <div class="card-body">
 
                         <h4 class="card-title mb-4 "> Billing Address</h4>
-                        <form action="">
-
+                        <form action="{% url 'place_order' %}" method="post">
+                            {% csrf_token %}
+   
                             <div class="form-row">
 
                                 <div class="col form-group ">
@@ -44,11 +45,11 @@
                             <div class="form-row">
                                 <div class="col form-group">
                                     <label for="">Address Line 1</label>
-                                    <input type="text" name="adress_line_1" class="form-control" required>
+                                    <input type="text" name="address_line_1" class="form-control" required>
                                 </div>
                                 <div class="col form-group">
                                     <label for="">Address line 2</label>
-                                    <input type="text" name="adress_line_2" class="form-control">
+                                    <input type="text" name="address_line_2" class="form-control">
                                 </div>
                             </div>
 
@@ -111,7 +112,7 @@
                                                     {{ item.variation_category }}: {{item.variation_value}} <br>
                                                     {% endfor %}
                                                     {% endif %}
-
+                                                </p>
                                             </figcaption>
                                         </figure>
                                     </td>
