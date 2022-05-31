@@ -15,7 +15,7 @@
 
     <thead>
         <tr>
-            <th>#</th>
+            <th>id</th>
             <th>ORDER NUMBER</th>
             <th>FULL NAME</th>
             <th>PHONE</th>
@@ -33,7 +33,7 @@
         <tbody>
             {% for i in order_data %}   
             <tr>
-                <td>1</td>  
+                <td>{{ i.id }}</td>  
                 <td>{{ i.order_number }}</td>
                 <td>{{ i.full_name }}</td>
                 <td>{{ i.phone }}</td>
@@ -45,9 +45,8 @@
                 <td>{{ i.is_ordered}}</td>
                 <td>{{ i.created_at}}</td>
                 <td>
-                    <a href="#" class="view " title="View" data-toggle="tooltip"><i class="fa fa-eye btn-success">&#xE417;</i></a>
-                    <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons btn-danger fa fa-bars">&#xE254;</i></a>
-                    <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                    <!-- <a href="#" class="view " title="View" data-toggle="tooltip"><i class="fa fa-eye btn-success">&#xE417;</i></a> -->
+                      <!-- <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a> -->
                 </td>
             </tr>
             {% endfor %}

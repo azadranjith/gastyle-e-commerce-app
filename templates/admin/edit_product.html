@@ -1,0 +1,92 @@
+
+{% extends 'admin/layout.html' %}
+{% load static %}
+{% block content %}
+
+{{ product_detail.product_name }}
+
+<div class="card-body">
+
+    <div class="text-right">
+        <img src="{{ product_detail.images.url }}" alt="Profile Picture" width="100", style="border-radius:50px"> 
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'edit_product' product_detail.id %}" method="post" enctype="multipart/form-data"> 
+                <!-- while submitting file to get the file updated add enctype in form -->    
+                {% csrf_token %}
+                <div class="form-row">
+
+                    <div class="fomr-group col-md-6">
+
+                        <label>Product Name</label>
+                        {{ product_form.product_name }}
+
+                    </div>
+
+                    <div class="fomr-group col-md-6">
+
+                        <label>slug</label>
+                        {{ product_form.slug }}
+
+                        
+                    </div>
+                    
+                    <div class="fomr-group col-md-6">
+
+                        <label>Description</label>
+                        {{ product_form.description }}
+
+                        
+                    </div>
+
+                    <div class="fomr-group col-md-6">
+
+                        <label>Price</label>  
+                        {{ product_form.price }}
+
+                        
+                    </div>
+                    <div class="fomr-group col-md-4">
+
+                        <label>Images</label>
+                        {{ product_form.images }}
+                        
+                    </div>
+
+                  
+                </div>
+                <div class="form-row">
+                    <div class="fomr-group col-md-4">
+
+                        <label>Stock</label>
+                        {{ product_form.stock }}
+                        
+                    </div>
+
+                    <div class="fomr-group col-md-4">
+
+                        <label>Is_available</label>
+                        {{ product_form.is_available }}
+                        
+                    </div>
+                    <div class="fomr-group col-md-4">
+
+                        <label>Category</label>
+                        {{ product_form.category }}
+                        
+                    </div>
+
+               
+
+                </div>
+
+                <input class="btn btn-success mt-2" type="submit" value="Save">
+            </form>
+            
+            
+        </div>
+
+    </div> <!-- row.// -->
+</div> <!-- card-body .// --> 
+{% endblock %}

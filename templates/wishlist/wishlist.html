@@ -1,0 +1,84 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+
+
+<section class="section-content padding-y bg">
+    <div class="container">
+
+        <!-- ============================ COMPONENT 1 ================================= -->
+
+
+        <div class="row">
+
+
+            <aside class="col-lg-12">
+
+
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-borderless table-shopping-cart">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+
+                                    <th scope="col">Product</th>
+
+                                    <th scope="col" width="120">Price</th>
+
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for wishlist_item in wishlist_items %}
+                                <tr>
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <div class="aside"> <a href="{{ wishlist_item.product.get_url }}"><img
+                                                        src="{{ wishlist_item.product.images.url }}" class="img-sm"></a>
+                                            </div>
+                                            <figcaption class="info">
+                                                <a href="{{ wishlist_item.product.get_url }}" class="title text-dark">
+                                                    {{ wishlist_item.product.product_name }} </a>
+                                                <p class="text-muted small">
+
+                                                </p>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                   
+                                    <td>
+                                        <div class="price-wrap">
+
+                                            <small class="text-muted"> ${{ wishlist_item.product.price }} </small>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-right">
+                                        <a href="{% url 'remove_wishlist' wishlist_item.id %}" class="btn btn-danger">
+                                            Remove</a>
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+
+
+                        </form>
+                    </div> <!-- card-body.// -->
+                </div> <!-- card.// -->
+
+            </aside> <!-- col.// -->
+
+
+        </div> <!-- row.// -->
+
+        <!-- ============================ COMPONENT 1 END .// ================================= -->
+
+    </div> <!-- container .//  -->
+</section>
+
+{% endblock %}

@@ -151,8 +151,10 @@
                     {% else%}
 
                     <a href="{% url 'add_cart' product.id %}" class="btn btn-block btn-danger cart ">Add to cart </a>
+                     
                     <!-- btn-success for the added to cart products -->
                     {% endif %}
+                    <a href="{% url 'add_wishlist' product.id %}" class="btn btn-block btn-danger cart ">Add to wishlist</a> 
 
                 </figcaption>
             </figure>

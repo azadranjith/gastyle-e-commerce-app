@@ -29,5 +29,6 @@ urlpatterns = [
     path('admi/',include('admi.urls')),
     path('gaadmin/',include('gaadmin.urls')),
     path('accounts/',include('accounts.urls')),
-    path('order/',include('orders.urls'))  
+    path('order/',include('orders.urls')),
+    path('wishlist/',include('wishlist.urls')) 
 ] + static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)#congiguring media files 

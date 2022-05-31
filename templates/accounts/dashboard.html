@@ -38,8 +38,11 @@
                                 <div class="card" style="text-align:center;">
 
                                     <div class="card-body">  
-
+                                        {% if user_profile.profile_picture %}
                                       <img src="{{ user_profile.profile_picture.url }}" alt="profile Picture" width="50" height="50" >
+                                        {% else %}
+                                        <img src="/media/photos/category/shoes.png" alt="profile Picture" width="50" height="50" >
+                                        {% endif %}  
                                         <p class="mb-0 ">{{user.email}}</p>
                                         <p>{{user.phone}}</p>
                                     </div> 

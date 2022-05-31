@@ -8,6 +8,7 @@
   <div class="container">
 
     <!-- ============================ COMPONENT 1 ================================= -->
+
     <div class="card">
       <div class="row no-gutters">
         <aside class="col-md-6">
@@ -80,6 +81,9 @@
                     class="fas fa-shopping-cart"></i></button>
 
                 {% endif %}
+                <a href="{% url 'add_wishlist' single_product.id %}" class="btn  btn-success  "> <span class="text">add to wishlist</span> <i
+                  class="fas fa-eye"></i></a>   
+                
             </form>
           </article> <!-- product-info-aside .// -->
         </main> <!-- col.// -->
@@ -89,7 +93,7 @@
 
     <br>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-9">
 
         <header class="section-heading">
@@ -105,7 +109,7 @@
               <h6 class="mb-1">Mike John </h6>
 
             </div>
-          </div> <!-- icontext.// -->
+          </div> 
           <div class="mt-3">
             <p>
               Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -117,8 +121,8 @@
 
 
 
-      </div> <!-- col.// -->
-    </div> <!-- row.// -->
+      </div> 
+    </div>  -->
 
 
   </div> <!-- container .//  -->
