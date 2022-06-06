@@ -1,0 +1,474 @@
+{% extends 'admin/layout.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
+
+{% if order.status != 'New' %}
+<br>
+
+	<svg class="checkmark" xmlns="http://www.w3.org/200/svg" viewBox="0 0 52 52"><circle class="checkmark_circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark_check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+<br>
+	<div class="text-center"><h3>Order {{ order.status }}</h3></div>
+
+{% endif %}
+	<style>
+		.success-animation { margin:150px auto;}
+
+		
+			
+			body {
+				font-family: 'Montserrat', sans-serif;
+				font-weight: 400;
+				color: #333;
+				background: #ECEEF4;
+			}
+{% if order.status == 'Cancelled' %}
+.checkmark {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;  
+    display: block;
+    stroke-width: 2;
+    stroke: #b71b1b;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #ee0b0b;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    position:relative;
+    top: 5px;
+    right: 5px;
+   margin: 0 auto;
+}
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2; 
+    stroke-miterlimit: 10; 
+    stroke: #eb0404;
+    fill: #ECEEF4;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+ 
+}
+
+{% else %}
+
+
+.checkmark {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;  
+    display: block;
+    stroke-width: 2;
+    stroke: #4bb71b;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #4bb71b;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    position:relative;
+    top: 5px;
+    right: 5px;
+   margin: 0 auto;
+}
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2; 
+    stroke-miterlimit: 10; 
+    stroke: #4bb71b;
+    fill: #ECEEF4;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+ 
+}
+{% endif %} 
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    10%, 100% {
+        transform: none;
+    }
+
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+{% if order.status == 'Cancelled' %}
+@keyframes fill {  
+    50%  {
+        box-shadow: inset 0px 0px 0px 30px #b71b1b;
+    }
+
+}
+{% else %}
+
+@keyframes fill {  
+    50%  {
+        box-shadow: inset 0px 0px 0px 30px #4bb71b;
+    }
+
+}
+
+{% endif %} 
+	</style>                  
+<div class="receipt-content">
+    <div class="container bootstrap snippets bootdey">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="invoice-wrapper"id="invoice">
+					<div class="intro">
+						Hi <strong>{{request.user.first_name}} <span> </span> {{request.user.last_name}}</strong>, 
+						<br>
+						<!-- This is the receipt for a payment of <strong>{{order.order_total}}</strong>  -->
+					</div>
+
+					<div class="payment-info">
+						<div class="row">
+							<div class="col-sm-6">
+								<span>Payment No.</span>
+								<strong>{{order.payment.payment_id}}</strong>
+							</div>
+							<div class="col-sm-6 text-right">
+								<span>Payment Date</span>
+								<strong>{{payment.created_at}}</strong>
+							</div>
+						</div>
+					</div>
+
+					<div class="payment-details">
+						<div class="row mt-4">
+							<div class="col-sm-6">
+								<span>Delivery Address</span>
+								<strong>
+									{{order.first_name}} {{order.last_name}}
+								</strong>
+								<p>
+									{{order.address_line_1}} <br>
+									{{order.city}}<br>
+									{{order.state}}<br>
+									{{order.country}} <br>
+									<a href="#">
+										{{order.email}}
+									</a>
+								</p>
+							</div>
+							<div class="col-sm-6">
+								<form action="{% url 'edit_order' order.order_number %}" method="post">
+									{% csrf_token %}
+									<strong> Order Status</strong>
+									<p>
+										{{order_form}}
+									</p>
+									<input type="submit" value="update" class="btn btn-success">
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div class="line-items">
+						
+						<div class="items">
+
+							{%for order_product in order_detail %}
+							<div class="row item">
+								<div class="col-xs-4 desc">
+									{{order_product.product.product_name}}
+								</div>
+								<div class="col-xs-3 qty">
+									{{order_product.quantity}}
+								</div>
+								<div class="col-xs-5 amount text-right">
+									{{order_product.each_total}}    
+								</div>
+							</div>
+							{%endfor%}
+							
+							
+						</div>
+						<div class="total text-right">
+							
+							<p class="extra-notes">
+								<strong>Order ID</strong>
+								{{order.order_number}}
+							</p>
+								
+							<div class="field">
+								Subtotal <span>${{ subtotal }}</span>
+							</div>
+							
+							<div class="field">
+								TAX <span>{{order.tax}}</span>
+							</div>
+								
+							
+							<div class="field grand-total">
+								Grand Total <span>${{order.order_total}}</span>
+							</div>
+						</div>
+
+						
+					</div>
+				</div>
+
+				<div class="footer">
+					Copyright © 2014. company name
+				</div>
+			</div>
+			<div class="print btn ">
+				<a href="#" id="download" class="btn-warning btn">
+					<i class="fa fa-print btn btn-warning"></i>
+					Download this receipt
+				</a>
+			</div>
+		</div>
+
+	
+	</div>
+	
+</div>  
+
+<style>
+	.receipt-content .logo a:hover {
+		text-decoration: none;
+		color: #7793C4; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper {
+		background: #FFF;
+		border: 1px solid #CDD3E2;
+		box-shadow: 0px 0px 1px #CCC;
+		padding: 40px 40px 60px;
+		margin-top: 40px;
+		border-radius: 4px; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .payment-details span {
+		color: #A9B0BB;
+		display: block; 
+	  }
+	  .receipt-content .invoice-wrapper .payment-details a {
+		display: inline-block;
+		margin-top: 5px; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .print a {
+		display: inline-block;
+		border: 1px solid #9CB5D6;
+		padding: 13px 13px;
+		border-radius: 5px;
+		color: #708DC0;
+		font-size: 13px;
+		-webkit-transition: all 0.2s linear;
+		-moz-transition: all 0.2s linear;
+		-ms-transition: all 0.2s linear;
+		-o-transition: all 0.2s linear;
+		transition: all 0.2s linear; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .print a:hover {
+		text-decoration: none;
+		border-color: #333;
+		color: #333; 
+	  }
+	  
+	  .receipt-content {
+		background: #ECEEF4; 
+	  }
+	  @media (min-width: 1200px) {
+		.receipt-content .container {width: 900px; } 
+	  }
+	  
+	  .receipt-content .logo {
+		text-align: center;
+		margin-top: 50px; 
+	  }
+	  
+	  .receipt-content .logo a {
+		font-family: Myriad Pro, Lato, Helvetica Neue, Arial;
+		font-size: 36px;
+		letter-spacing: .1px;
+		color: #555;
+		font-weight: 300;
+		-webkit-transition: all 0.2s linear;
+		-moz-transition: all 0.2s linear;
+		-ms-transition: all 0.2s linear;
+		-o-transition: all 0.2s linear;
+		transition: all 0.2s linear; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .intro {
+		line-height: 25px;
+		color: #444; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .payment-info {
+		margin-top: 25px;
+		padding-top: 15px; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .payment-info span {
+		color: #A9B0BB; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .payment-info strong {
+		display: block;
+		color: #444;
+		margin-top: 3px; 
+	  }
+	  
+	  @media (max-width: 767px) {
+		.receipt-content .invoice-wrapper .payment-info .text-right {
+		text-align: left;
+		margin-top: 20px; } 
+	  }
+	  .receipt-content .invoice-wrapper .payment-details {
+		border-top: 2px solid #EBECEE;
+		margin-top: 30px;
+		padding-top: 20px;
+		line-height: 22px; 
+	  }
+	  
+	  
+	  @media (max-width: 767px) {
+		.receipt-content .invoice-wrapper .payment-details .text-right {
+		text-align: left;
+		margin-top: 20px; } 
+	  }
+	  .receipt-content .invoice-wrapper .line-items {
+		margin-top: 40px; 
+	  }
+	  .receipt-content .invoice-wrapper .line-items .headers {
+		color: #A9B0BB;
+		font-size: 13px;
+		letter-spacing: .3px;
+		border-bottom: 2px solid #EBECEE;
+		padding-bottom: 4px; 
+	  }
+	  .receipt-content .invoice-wrapper .line-items .items {
+		margin-top: 8px;
+		border-bottom: 2px solid #EBECEE;
+		padding-bottom: 8px; 
+	  }
+	  .receipt-content .invoice-wrapper .line-items .items .item {
+		padding: 10px 0;
+		color: #696969;
+		font-size: 15px; 
+	  }
+	  @media (max-width: 767px) {
+		.receipt-content .invoice-wrapper .line-items .items .item {
+		font-size: 13px; } 
+	  }
+	  .receipt-content .invoice-wrapper .line-items .items .item .amount {
+		letter-spacing: 0.1px;
+		color: #84868A;
+		font-size: 16px;
+	   }
+	  @media (max-width: 767px) {
+		.receipt-content .invoice-wrapper .line-items .items .item .amount {
+		font-size: 13px; } 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .total {
+		margin-top: 30px; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .total .extra-notes {
+		float: left;
+		width: 40%;
+		text-align: left;
+		font-size: 13px;
+		color: #7A7A7A;
+		line-height: 20px; 
+	  }
+	  
+	  @media (max-width: 767px) {
+		.receipt-content .invoice-wrapper .line-items .total .extra-notes {
+		width: 100%;
+		margin-bottom: 30px;
+		float: none; } 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .total .extra-notes strong {
+		display: block;
+		margin-bottom: 5px;
+		color: #454545; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .total .field {
+		margin-bottom: 7px;
+		font-size: 14px;
+		color: #555; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .total .field.grand-total {
+		margin-top: 10px;
+		font-size: 16px;
+		font-weight: 500; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .total .field.grand-total span {
+		color: #20A720;
+		font-size: 16px; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .total .field span {
+		display: inline-block;
+		margin-left: 20px;
+		min-width: 85px;
+		color: #84868A;
+		font-size: 15px; 
+	  }
+	  
+	  .receipt-content .invoice-wrapper .line-items .print {
+		margin-top: 50px;
+		text-align: center; 
+	  }
+	  
+	  
+	  
+	  .receipt-content .invoice-wrapper .line-items .print a i {
+		margin-right: 3px;
+		font-size: 14px; 
+	  }
+	  
+	  .receipt-content .footer {
+		margin-top: 40px;
+		margin-bottom: 110px;
+		text-align: center;
+		font-size: 12px;
+		color: #969CAD; 
+	  }                    
+</style>
+<script>
+    window.onload = function () {
+        document.getElementById("download")
+            .addEventListener("click", () => {
+                const invoice = this.document.getElementById("invoice");
+                console.log(invoice);
+                console.log(window);
+                var opt = {
+                    margin: 1,
+                    filename: '{{order.order_number}}.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+                html2pdf().from(invoice).set(opt).save();
+            })
+    }
+</script>
+
+{% endblock %}

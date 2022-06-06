@@ -24,6 +24,7 @@
             <th>Modified Date</th>
             <th>Is_available</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     
@@ -31,16 +32,19 @@
             {% for product in product_data %}   
             <tr>
                 <td>{{ product.id}}</td>
-                <td><a href="{% url 'edit_product' product.id %}" style="text-decoration: none;">{{ product.product_name }} <span> <div></div></span> <i class="fa fa-edit text-warning">&#xE417;</i></a></td>
+                <td>{{ product.product_name }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.stock }}</td>
                 <td>{{ product.category }}</td>
                 <td>{{ product.modified_date }}</td>
-                <td>{{ product.is_available }}</td>  
+                <td>{{ product.is_available }}</td> 
     
                 <td>
-                    <a href="{% url 'remove_product' product.id %}" class="view" title="View" data-toggle="tooltip"><i class="fa fa-trash text-danger">&#xE417;</i></a>
-        
+                    <a href="{% url 'remove_product' product.id %}" class="view btn btn-danger" title="View" data-toggle="tooltip"><i class="fa fa-trash text-white">&#xE417;</i></a>
+                    
+                </td>
+                <td>
+                    <a href="{% url 'edit_product' product.id %}" class="view btn btn-warning " title="View" data-toggle="tooltip" style="text-decoration: none;">edit<i class="fa fa-pen ps-2 text-success">&#xE417;</i></a>
                 </td>
             </tr>
             {% endfor %}

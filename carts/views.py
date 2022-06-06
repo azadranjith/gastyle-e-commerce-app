@@ -100,6 +100,7 @@ def add_cart(request, product_id):
             item_id = id[index]
             item = CartItem.objects.get(product=product,id=item_id)
             item.quantity += 1
+            # if item.quantity < product.quantity
             item.save()
         else:
             if request.user.is_authenticated:

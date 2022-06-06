@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Variation,ProductGallery
+from .models import Product, Variation,ProductGallery,ReviewRating
 # Register your models here.
 
 #product menu 
@@ -17,3 +17,5 @@ admin.site.register(Product,ProductAdmin)
 admin.site.register(Variation,VariationAdmin)
 
 admin.site.register(ProductGallery)
+
+admin.site.register(ReviewRating)

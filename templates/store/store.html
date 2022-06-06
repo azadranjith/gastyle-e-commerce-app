@@ -84,12 +84,14 @@
             </header>
             <div class="filter-content collapse show" id="collapse_3" style="">
                 <div class="card-body">
-                    
+                <form action="{% url 'filter' %}" method="post"> 
+                    {% csrf_token %}               
                     <div class="form-row">
                     <div class="form-group col-md-6">
                       <label>Min</label>
                       <!-- <input class="form-control" placeholder="$0" type="number"> -->
-                          <select class="mr-2 form-control">
+                          <select  name="from" class="mr-2 form-control">
+                            <option value="{{min}}">${{min}}</option>
                             <option value="0">$0</option>
                             <option value="50">$50</option>
                             <option value="100">$100</option>
@@ -98,10 +100,12 @@
                             <option value="500">$500</option>
                             <option value="1000">$1000</option>
                         </select>
+                      
                     </div>
                     <div class="form-group text-right col-md-6">
                       <label>Max</label>
-                          <select class="mr-2 form-control">
+                          <select name="to" class="mr-2 form-control"> 
+                            <option value="{{max}}">${{max}}</option>
                             <option value="50">$50</option>
                             <option value="100">$100</option>
                             <option value="150">$150</option>
@@ -109,10 +113,13 @@
                             <option value="500">$500</option>
                             <option value="1000">$1000</option>
                             <option value="2000">$2000+</option>
+                          
                         </select>
-                    </div>
-                    </div> <!-- form-row.// -->
-                    <button class="btn btn-block btn-primary" style="background-color: #c69999;border: #c69999;">Apply</button>
+                       
+                    </div> <!-- form-row.// -->  
+                    <button type="submit" class="btn btn-block btn-primary" style="background-color: #c69999;border: #c69999;">Apply</button>
+                </form>   
+                  
                 </div><!-- card-body.// -->
             </div>
         </article> <!-- filter-group .// -->

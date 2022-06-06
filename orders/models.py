@@ -79,6 +79,7 @@ class Order(models.Model):
     def __str__(self):
         return self.first_name
 
+    
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
 
@@ -104,5 +105,7 @@ class OrderProduct(models.Model):
     def __str__(self):
         return self.product.product_name
 
+    def each_total(self):
+        return self.quantity * self.product_price 
     
     

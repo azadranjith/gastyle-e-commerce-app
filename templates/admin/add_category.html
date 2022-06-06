@@ -1,0 +1,60 @@
+{% extends 'admin/layout.html' %}
+{% load static %}
+{% block content %}
+
+<div class="card-body">
+    <div class="text-right">
+    {% if category_detail.cat_image %}
+    <img src="{{ product_detail.cat_image.url }}" alt="profile Picture" width="50" height="50" >  
+    {% else %}
+    <img src="/media/photos/category/shoes.png" alt="profile Picture" width="50" height="50" >
+    {% endif %}
+    {% include 'includes/alerts.html' %}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'add_category' %}" method="post" enctype="multipart/form-data">  
+                <!-- while submitting file to get the file updated add enctype in form -->    
+                {% csrf_token %}
+                <div class="form-row">
+
+                    <div class="fomr-group col-md-6">
+
+                        <label>Category Name</label>
+                        {{ category_form.category_name }}
+
+                    </div>
+
+                    
+                    <div class="fomr-group col-md-6">
+
+                        <label>Description</label>
+                        {{ category_form.description }}
+
+                        
+                    </div>
+                    <div class="fomr-group col-md-4">
+
+                        <label>Images</label>
+                        {{ category_form.cat_image }}
+                        
+                    </div>
+
+                  
+                </div>
+               
+               
+
+                </div>
+
+                <input class="btn btn-success mt-2" type="submit" value="Save">
+            </form>
+            
+            
+        </div>
+
+    </div> <!-- row.// -->
+</div> <!-- card-body .// --> 
+
+
+{% endblock %}

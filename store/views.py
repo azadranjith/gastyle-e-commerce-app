@@ -1,43 +1,45 @@
 
-from ast import keyword
-from urllib import response
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from carts.models import CartItem
 from category.models import Category
 from carts.views import _cart_id
+from django.urls import reverse
 #for paginator
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from store.forms import ReviewForm
 
-from store.models import Product,ProductGallery
-
+from store.models import Product,ProductGallery, ReviewRating
+from orders.models import OrderProduct
 from django.db.models import  Q
 
 from django.http import HttpResponse
-
+from django.contrib import messages
 # Create your views here.
-def store(request,category_slug = None):
+def store(request,category_slug = None,min=0,max=100000):
     categories = None
 
     all_products = None
 
     if category_slug != None:
         categories = get_object_or_404(Category,slug = category_slug)
-        all_products = Product.objects.filter(category = categories, is_available = True)
+        all_products = Product.objects.filter(category = categories, is_available = True, price__lte=max,price__gte=min)
 
-        paginator = Paginator(all_products,1)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
-        product_count = Product.objects.filter(category = categories, is_available = True).count
-    else:
-        
-        all_products = Product.objects.all().order_by('id')# included the not available
         paginator = Paginator(all_products,6)
         page = request.GET.get('page')
         paged_products = paginator.get_page(page)
-        product_count = Product.objects.all().count
+        product_count = Product.objects.filter(category = categories, is_available = True, price__lte=max,price__gte=min).count
+    else:
+        
+        all_products = Product.objects.filter(price__lte=max,price__gte=min).order_by('id')# included the not available
+        paginator = Paginator(all_products,6) 
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
+        product_count = Product.objects.filter(price__lte=max,price__gte=min).count
 
-
+    
     context = {
+        'min':min,
+        'max':max,
         'products':paged_products,
         'product_count':product_count   
     }
@@ -53,9 +55,17 @@ def product_detail(request,category_slug,product_slug):
     except Exception as e:
         raise e  
 
+    try:
+        order_product = OrderProduct.objects.filter(user = request.user,product = single_product).exists()  
+
+    except OrderProduct.DoesNotExist:
+        order_product = None
+
+
 
     #review
 
+    reviews = ReviewRating.objects.filter(product= single_product,status = True)
 
 
     #gallery
@@ -67,7 +77,9 @@ def product_detail(request,category_slug,product_slug):
     context = {
         'single_product':single_product,
         'in_cart':in_cart,
-        'product_gallery':product_gallery
+        'product_gallery':product_gallery,
+        'order_product':order_product,
+        'reviews':reviews,  
 
     }
     return render(request,'store/product_detail.html',context)
@@ -88,3 +100,86 @@ def search(request):
     }
     return render(request,'store/store.html',context)
 
+def filter(request):
+    min = None
+    max = None
+    if request.method == "POST":
+        
+        min = request.POST['from']
+        max = request.POST['to']
+     
+    url = request.META.get('HTTP_REFERER')
+    categories = Category.objects.all()
+    for i in categories: 
+        print(i)
+        if '/category/'+ i.slug in url:
+            print("re routed")
+            return redirect('products_by_filter', category_slug = i.slug,min=min,max=max)     
+            # return (store(request,category_slug=i.slug,min = min,max=max))  
+            # return HttpResponse("the category is "+ i.slug)    
+
+        
+    return(store(request,min=min,max=max))
+    
+
+
+# def fil_store(request,category_slug = None,min=None,max=None):
+#     categories = None
+
+#     all_products = None
+
+#     if category_slug != None:
+#         categories = get_object_or_404(Category,slug = category_slug)
+#         all_products = Product.objects.filter(category = categories, is_available = True, price__lte=max,price__gte=min)
+
+#         paginator = Paginator(all_products,6)
+#         page = request.GET.get('page')
+#         paged_products = paginator.get_page(page)
+#         product_count = Product.objects.filter(category = categories, is_available = True, price__lte=max,price__gte=min).count
+#     else:
+        
+#         all_products = Product.objects.filter(price__lte=max,price__gte=min).order_by('id')# included the not available
+#         paginator = Paginator(all_products,6) 
+#         page = request.GET.get('page')
+#         paged_products = paginator.get_page(page)
+#         product_count = Product.objects.filter(price__lte=max,price__gte=min).count
+
+
+#     context = {
+#         'products':paged_products,
+#         'product_count':product_count   
+#     }
+#     return render(request,'store/store.html',context)
+
+def submit_review(request,product_id):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        try:
+
+            reviews = ReviewRating.objects.get(user__id=request.user.id,product__id = product_id)
+            form = ReviewForm(request.POST,instance=reviews)
+            form.save()
+            messages.success(request,"thank you, Your review updated")
+            return redirect(url)
+
+        except ReviewRating.DoesNotExist:
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                data = ReviewRating()
+
+                # data.subject = request.POST['subject']
+                data.subject = form.cleaned_data['subject']
+                data.rating = form.cleaned_data['rating']
+                data.review = form.cleaned_data['review']
+
+                data.ip = request.META.get('REMOTE_ADDR')
+
+                data.product_id = product_id
+
+                data.user_id = request.user.id
+
+                data.save()  
+
+                messages.success(request,"review submitted , thank you.")
+
+                return redirect(url)

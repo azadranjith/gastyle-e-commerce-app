@@ -1,0 +1,48 @@
+{% extends 'admin/layout.html' %}
+{% load static %}
+{% block content %}
+
+{{ category_detail.category_name }}
+
+<div class="card-body">
+
+    <div class="text-right">
+        <img src="{{ category_detail.cat_image.url }}" alt="Profile Picture" width="100", style="border-radius:50px">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'edit_category' category_detail.id %}" method="post" enctype="multipart/form-data"> 
+                <!-- while submitting file to get the file updated add enctype in form -->    
+                {% csrf_token %}
+                <div class="form-row">
+
+                    <div class="fomr-group col-md-6">
+
+                        <label>Category Name</label>
+                        {{ category_form.category_name }}
+
+                    </div>
+                    
+                    <div class="fomr-group col-md-6">
+
+                        <label>Description</label>
+                        {{ category_form.description }}
+
+                        
+                    </div>
+                    <div class="fomr-group col-md-4">
+
+                        <label>Images</label>
+                        {{ category_form.cat_image }}
+                        
+                    </div>
+
+                <input class="btn btn-success mt-2" type="submit" value="Save">
+            </form>
+            
+            
+        </div>
+
+    </div> <!-- row.// -->
+</div> <!-- card-body .// --> 
+{% endblock %}

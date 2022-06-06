@@ -1,0 +1,61 @@
+
+{% extends 'admin/layout.html' %}
+<!-- {% load static %} -->
+{% block content %}
+
+
+<a class="btn btn-primary mb-5" href="{% url 'add_category' %}">add Category</a>    
+
+<table id="table_id" class="display table table-striped table-hover table-bordered">
+
+
+
+
+
+
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <!-- <th>Category</th>
+            <th>Modified Date</th>
+            <th>Is_available</th> -->
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    
+        <tbody>
+            {% for cat in category %}   
+            <tr>
+                <td>{{ cat.id}}</td>
+                <td><a href="#" style="text-decoration: none;">{{ cat.category_name }} <span> <div></div></span> <i class="fa fa-edit text-warning">&#xE417;</i></a></td>
+                <td>{{ cat.description }}</td>
+                <td> <img src="{{ cat.cat_image.url }}" alt="category image" style="width: 100px; height:fit-content"> </td>   
+                <!-- <td>{{ product.category }}</td>
+                <td>{{ product.modified_date }}</td>
+                <td>{{ product.is_available }}</td>   -->
+    
+                <td>
+                    <a href="{% url 'remove_cat' cat.id %}" class="view" title="View" data-toggle="tooltip"><i class="fa fa-trash text-danger">&#xE417;</i></a>
+        
+                </td>
+                <td>
+                    <a href="{% url 'edit_category' cat.id %}" class="view btn btn-warning " title="View" data-toggle="tooltip" style="text-decoration: none;">edit<i class="fa fa-pen ps-2 text-success">&#xE417;</i></a>
+                </td>
+            </tr>
+            {% endfor %}
+           
+        </tbody>
+    
+</table>
+
+
+
+
+
+
+
+{% endblock %}  
