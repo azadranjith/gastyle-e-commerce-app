@@ -5,12 +5,12 @@ from django.utils.text import slugify
 from accounts.models import Account
 from orders.views import payment
 
-from store.models import Product
+from store.models import Product, Variation
 
 from orders.models import Order, OrderProduct, Payment
 from store.views import product_detail
 
-from .forms import CategoryForm, ProductForm, OrderForm
+from .forms import CategoryForm, ProductForm, OrderForm,VariationForm
 
 from category.models import Category
 # Create your views here.
@@ -301,3 +301,38 @@ def remove_order(request,order_number):
     cat.delete()
 
     return redirect('order_data') 
+
+def add_variations(request,product_id):
+    variation_form = VariationForm()
+    product = Product.objects.get(id = product_id)
+    if request.method == 'POST':
+        
+        variation_form = VariationForm(request.POST,request.FILES) 
+
+        
+        if variation_form.is_valid():
+            
+            
+        
+            variation_form.save()
+    
+
+            messages.success(request,'Producte has been added')
+
+            # variation_detail = Variation.objects.get(product = product)
+            
+              
+            # variation_form = VariationForm(instance=variation_detail)   
+            # context = {
+            # 'product_detail':product_detail,
+            # 'product_form':product_form
+            # }
+            # return render(request,'admin/edit_product.html',context)  
+
+    context = {
+        
+        'variation_form':variation_form,
+        'product_id':product_id,
+
+    }
+    return render(request,'admin/add_variations.html',context)

@@ -26,5 +26,10 @@ urlpatterns = [
     path('edit_order/<int:order_number>',views.edit_order,name='edit_order'),
     path('remove_order/<int:order_number>',views.remove_order,name = 'remove_order'), 
 
+    #edit variation
+
+    path('add_variations/<int:product_id>',views.add_variations,name = 'add_variations'), 
+
+
 
 ]       

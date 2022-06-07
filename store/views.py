@@ -14,11 +14,32 @@ from django.db.models import  Q
 
 from django.http import HttpResponse
 from django.contrib import messages
+
+
+
+from wishlist.models import WishlistItem,Wishlist
+from wishlist.views import _wish_id
 # Create your views here.
 def store(request,category_slug = None,min=0,max=100000):
     categories = None
 
     all_products = None
+    wlist = []
+    try:
+        if request.user.is_authenticated:
+            wishlist_items = WishlistItem.objects.filter(user=request.user)
+        else:
+            wishlist = Wishlist.objects.get(wishlist_id=_wish_id(request))
+
+            wishlist_items = WishlistItem.objects.filter(wishlist = wishlist)
+        for items in wishlist_items:
+            wlist.append(items.product.product_name)
+    
+        
+    except Wishlist.DoesNotExist:  
+        wishlist_items = None
+    print(wlist)
+    
 
     if category_slug != None:
         categories = get_object_or_404(Category,slug = category_slug)
@@ -30,7 +51,7 @@ def store(request,category_slug = None,min=0,max=100000):
         product_count = Product.objects.filter(category = categories, is_available = True, price__lte=max,price__gte=min).count
     else:
         
-        all_products = Product.objects.filter(price__lte=max,price__gte=min).order_by('id')# included the not available
+        all_products = Product.objects.filter(price__lte=max,price__gte=min).order_by('-modified_date')# included the not available
         paginator = Paginator(all_products,6) 
         page = request.GET.get('page')
         paged_products = paginator.get_page(page)
@@ -41,7 +62,9 @@ def store(request,category_slug = None,min=0,max=100000):
         'min':min,
         'max':max,
         'products':paged_products,
-        'product_count':product_count   
+        'product_count':product_count,
+        'wishes':wlist,
+        'wishlist_items':wishlist_items, 
     }
     return render(request,'store/store.html',context)
 
@@ -54,11 +77,14 @@ def product_detail(request,category_slug,product_slug):
         
     except Exception as e:
         raise e  
+    if request.user.is_authenticated:
+        try:
+            
+            order_product = OrderProduct.objects.filter(user = request.user,product = single_product).exists()  
 
-    try:
-        order_product = OrderProduct.objects.filter(user = request.user,product = single_product).exists()  
-
-    except OrderProduct.DoesNotExist:
+        except OrderProduct.DoesNotExist:
+            order_product = None
+    else:
         order_product = None
 
 
@@ -123,33 +149,7 @@ def filter(request):
     
 
 
-# def fil_store(request,category_slug = None,min=None,max=None):
-#     categories = None
 
-#     all_products = None
-
-#     if category_slug != None:
-#         categories = get_object_or_404(Category,slug = category_slug)
-#         all_products = Product.objects.filter(category = categories, is_available = True, price__lte=max,price__gte=min)
-
-#         paginator = Paginator(all_products,6)
-#         page = request.GET.get('page')
-#         paged_products = paginator.get_page(page)
-#         product_count = Product.objects.filter(category = categories, is_available = True, price__lte=max,price__gte=min).count
-#     else:
-        
-#         all_products = Product.objects.filter(price__lte=max,price__gte=min).order_by('id')# included the not available
-#         paginator = Paginator(all_products,6) 
-#         page = request.GET.get('page')
-#         paged_products = paginator.get_page(page)
-#         product_count = Product.objects.filter(price__lte=max,price__gte=min).count
-
-
-#     context = {
-#         'products':paged_products,
-#         'product_count':product_count   
-#     }
-#     return render(request,'store/store.html',context)
 
 def submit_review(request,product_id):
     url = request.META.get('HTTP_REFERER')
@@ -183,3 +183,55 @@ def submit_review(request,product_id):
                 messages.success(request,"review submitted , thank you.")
 
                 return redirect(url)
+
+
+
+def new_arrivals(request,category_slug = None,min=0,max=100000):
+    categories = None
+
+    all_products = None
+    wlist = []
+    try:
+        if request.user.is_authenticated:
+            wishlist_items = WishlistItem.objects.filter(user=request.user)
+        else:
+            wishlist = Wishlist.objects.get(wishlist_id=_wish_id(request))
+
+            wishlist_items = WishlistItem.objects.filter(wishlist = wishlist)
+        for items in wishlist_items:
+            wlist.append(items.product.product_name)
+    
+        
+    except Wishlist.DoesNotExist:  
+        wishlist_items = None
+    print(wlist)
+    
+    
+
+    if category_slug != None:
+        categories = get_object_or_404(Category,slug = category_slug)
+        all_products = Product.objects.filter(category = categories, is_available = True, price__lte=max,price__gte=min)
+
+        paginator = Paginator(all_products,6)
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
+        product_count = Product.objects.filter(category = categories, is_available = True, price__lte=max,price__gte=min).count
+    else:
+        
+        all_products = Product.objects.filter(price__lte=max,price__gte=min).order_by('created_date')# included the not available
+        paginator = Paginator(all_products,6) 
+        page = request.GET.get('page')
+        paged_products = paginator.get_page(page)
+        product_count = Product.objects.filter(price__lte=max,price__gte=min).count
+
+    
+    context = {
+        'min':min,
+        'max':max,
+        'products':paged_products,
+        'product_count':product_count,
+        'wishes':wlist,
+        'wishlist_items':wishlist_items, 
+    }
+    return render(request,'store/store.html',context)
+

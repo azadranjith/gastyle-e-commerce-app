@@ -29,13 +29,13 @@
           <!-- <a class="nav-link active" aria-current="page" href="#"><span class="category me-4" > Categories</span></a> -->
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#"><span class="category me-4"> New Arrivals</span></a>
+          <a class="nav-link active" aria-current="page" href="{% url 'new_arrivals' %}"><span class="category me-4"> New Arrivals</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#"><span class="category me-4"> Accessories</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#"><span class="category me-4"> Clothes</span></a>
+          <a class="nav-link active" aria-current="page" href="{% url 'new_arrivals' %}"><span class="category me-4"> Clothes</span></a>
         </li>
 
 
@@ -54,7 +54,7 @@
             aria-expanded="false">
             account
           </button> -->
-          <img class="user-logo dropdown-toggle " src="{% static 'images/user.png' %}" alt="" id="dropbtn"
+          <img class="user-logo dropdown-toggle " src="{% static 'images/ostrich.png' %}" alt="" id="dropbtn"
             data-bs-toggle="dropdown" aria-expanded="false">
           <ul class="dropdown-menu" aria-labelledby="dropbtn">
             {% if user.id is None %}

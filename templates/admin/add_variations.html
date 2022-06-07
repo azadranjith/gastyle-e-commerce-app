@@ -1,0 +1,62 @@
+{% extends 'admin/layout.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="card-body">
+    <div class="text-right">
+    {% if product_detail.images %}
+     <img src="{{ product_detail.images.url }}" alt="profile Picture" width="50" height="50" >
+    {% else %}
+    <img src="/media/avatar/ostrich.png" alt="profile Picture" width="50" height="50" >
+    {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'add_variations' product_id %}" method="post" enctype="multipart/form-data"> 
+                <!-- while submitting file to get the file updated add enctype in form -->    
+                {% csrf_token %}
+                <div class="form-row">
+
+                    <div class="fomr-group col-md-6">
+
+                        <label>Product </label>
+                        {{ variation_form.product }}
+
+                    </div>
+                    
+                    <div class="fomr-group col-md-6">
+
+                        <label>Variation category</label>
+                        {{ variation_form.variation_category }}
+
+                        
+                    </div>
+
+                    <div class="fomr-group col-md-6">
+
+                        <label>Variation value</label>
+                        {{ variation_form.variation_value }}
+
+                        
+                    </div>
+                    <div class="fomr-group col-md-4">
+
+                        <label>Is active</label>
+                        {{ variation_form.is_active }}
+                        
+                    </div>
+
+                  
+                </div>
+               
+                <input class="btn btn-success mt-2" type="submit" value="Save">
+            </form>
+            
+            
+        </div>
+
+    </div> <!-- row.// -->
+</div> <!-- card-body .// --> 
+
+{% endblock %}

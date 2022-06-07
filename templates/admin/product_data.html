@@ -25,6 +25,7 @@
             <th>Is_available</th>
             <th></th>
             <th></th>
+            <th>Variatiions</th>
         </tr>
     </thead>
     
@@ -45,6 +46,9 @@
                 </td>
                 <td>
                     <a href="{% url 'edit_product' product.id %}" class="view btn btn-warning " title="View" data-toggle="tooltip" style="text-decoration: none;">edit<i class="fa fa-pen ps-2 text-success">&#xE417;</i></a>
+                </td>
+                <td>
+                    <a href="{% url 'add_variations' product.id %}" class="view btn btn-warning " title="View" data-toggle="tooltip" style="text-decoration: none;">edit<i class="fa fa-pen ps-2 text-success">&#xE417;</i></a>
                 </td>
             </tr>
             {% endfor %}

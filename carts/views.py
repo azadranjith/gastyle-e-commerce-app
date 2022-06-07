@@ -6,6 +6,8 @@ from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 from django.http import HttpResponse
 
+from django.contrib import messages
+
 from django.contrib.auth.decorators import login_required
 #adding to cart without logging in
 # we use session id as the cart_id while creating cart
@@ -23,11 +25,21 @@ def _cart_id(request):
 # function to add product to cart
 
 def add_cart(request, product_id):
-
-    product = Product.objects.get(id = product_id)  
-    product_variation = []
-    if request.method == 'POST':
+    stock = "" 
+    product = Product.objects.get(id = product_id)
+    var = []
+      
+    variation = Variation.objects.filter(product=product)
+    for i in variation:
+        var.append(i)
         
+    print(var)
+    product_variation = []
+    product_variation.append(var[0])
+    product_variation.append(var[-1])
+    
+    if request.method == 'POST':
+        product_variation = []
         for item in request.POST:
             key = item
             value = request.POST[key]
@@ -100,8 +112,11 @@ def add_cart(request, product_id):
             item_id = id[index]
             item = CartItem.objects.get(product=product,id=item_id)
             item.quantity += 1
-            # if item.quantity < product.quantity
+            
             item.save()
+           
+
+
         else:
             if request.user.is_authenticated:
                 item = CartItem.objects.create(product = product,user=request.user,quantity = 1)
@@ -122,7 +137,7 @@ def add_cart(request, product_id):
             item.variations.clear()
             item.variations.add(*product_variation)
         item.save() #should i move this???????????
-    
+    print(product_variation)  
     return redirect('cart')
 
 def cart(request,total = 0,quantity = 0,cart_items = None):
@@ -191,6 +206,11 @@ def checkout(request,total = 0,quantity = 0,cart_items = None):
         for cart_item in cart_items:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
+
+            if cart_item.quantity > cart_item.product.stock:
+                messages.error(request,f"{cart_item.product.product_name} exceeds stock limit ")
+                messages.success(request,f"only {cart_item.product.stock} is avaliable")
+                return redirect('cart') 
 
         tax = (3 * total)/100
         grand_total = total + tax

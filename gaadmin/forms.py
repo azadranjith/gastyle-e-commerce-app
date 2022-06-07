@@ -1,9 +1,10 @@
 
+from dataclasses import fields
 from django import forms
 from category.models import Category
 from orders.models import Order
 
-from store.models import Product
+from store.models import Product,Variation
 
 
 class ProductForm(forms.ModelForm):
@@ -40,3 +41,13 @@ class OrderForm(forms.ModelForm):
         super(OrderForm,self).__init__(*args,**kwargs)
         for field in self.fields:
              self.fields[field].widget.attrs['class'] = 'form-control'  
+class VariationForm(forms.ModelForm):
+    class Meta:
+        model =Variation
+
+        fields = ['product','variation_category','variation_value','is_active',]
+    def __init__(self,*args,**kwargs):
+        super(VariationForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            if field != 'is_active':
+                self.fields[field].widget.attrs['class'] = 'form-control'  

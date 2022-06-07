@@ -22,11 +22,11 @@ integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="ano
                     </header>
                     <div class="card-body">
 
-                        <div class="text-right">
+                        <div class="text-center mb-3">
                             {% if user_profile.profile_picture %}
                             <img src="{{ user_profile.profile_picture.url }}" alt="profile Picture" width="50" height="50" >
                               {% else %}
-                              <img src="/media/photos/category/shoes.png" alt="profile Picture" width="50" height="50" >
+                              <img src="/media/avatar/ostrich.png" alt="profile Picture" width="50" height="50" >
                               {% endif %}  
                         </div>
                         <div class="row">

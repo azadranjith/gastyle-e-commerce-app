@@ -10,7 +10,7 @@ font-size: 52px;
 /* 32 */
 line-height: 38px;
 padding-left: 120px;
-color: #C69999;
+color: #f5179c;
 
 }
 .category{
@@ -20,7 +20,7 @@ font-weight: 400;
 font-size: 25px;
 line-height: 26px;
 
-color: #C69999;
+color: #f5179c;
 }
 .user-logo{
     width: 39px;
@@ -57,7 +57,7 @@ height: 28px;
 
 border-radius: 29px;
 
-background: rgba(238, 123, 123, 0.58);
+background: #f5179c
 
 }
 .cart-item-count{
