@@ -105,20 +105,20 @@ def payment(request):
     
         
 
-    #send order recieved to customer
-    mail_subject = 'Thank You for your order'
+    #send order recieved to customer  
+#     mail_subject = 'Thank You for your order'
 
-    message = render_to_string('orders/order_recieved_email.html',{
-        'user':request.user,
-        'order':order, 
+#     message = render_to_string('orders/order_recieved_email.html',{
+#         'user':request.user,
+#         'order':order, 
       
-    })
+#     })
 
-    to_email = request.user.email
+#     to_email = request.user.email
 
-    send_email = EmailMessage(mail_subject,message,to=[to_email])
+#     send_email = EmailMessage(mail_subject,message,to=[to_email])
 
-    send_email.send()  
+#     send_email.send()  
     #remove the cart
 
 
