@@ -73,7 +73,8 @@ def register(request):
 
             
             messages.success(request,'thank you for registering please verify your email')
-
+            user_profile = UserProfile.objects.create(user = user)
+            user_profile.save()  
             return redirect('login')    
 
     else:
