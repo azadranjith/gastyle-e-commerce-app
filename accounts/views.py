@@ -182,23 +182,22 @@ def logout(request):
 
 @login_required(login_url = 'login')
 def dashboard(request):
-    orders = Order.objects.order_by('-created_at').filter(user = request.user,is_ordered = True)
+    try:
+        orders = Order.objects.order_by('-created_at').filter(user = request.user,is_ordered = True)
 
 
-    orders_count = orders.count()
-    
-    
-
-    user_profile = UserProfile.objects.get(user=request.user)
-
-    # if not user_profile.profile_picture:
-
-    #     user_profile.profile_picture = 
-   
-    context = {
+        orders_count = orders.count()
+    except:
+        orders_count = 0
+        
+        
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except:
+        context = {
         'orders_count':orders_count,
-        'user_profile':user_profile,
-    }
+        
+        }
     return render(request,'accounts/dashboard.html',context)
 
 
