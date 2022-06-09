@@ -26,7 +26,6 @@ urlpatterns = [
     path('',views.home,name='home'),
     path('store/',include('store.urls')),
     path('cart/',include('carts.urls')),
-    path('admi/',include('admi.urls')),
     path('gaadmin/',include('gaadmin.urls')),
     path('accounts/',include('accounts.urls')),
     path('order/',include('orders.urls')),
