@@ -199,6 +199,11 @@ def dashboard(request):
         'orders_count':orders_count,
         
         }
+        return render(request,'accounts/dashboard.html',context)
+    context = {
+        'orders_count':orders_count,
+        'user_profile':user_profile,
+    }
     return render(request,'accounts/dashboard.html',context)
 
 
