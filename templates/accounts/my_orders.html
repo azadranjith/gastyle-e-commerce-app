@@ -29,7 +29,7 @@ integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="ano
                                            
                                             <th>ORDER #</th>
                                             <th>BILLING NAME</th>
-                                            <th>PHONE</th>
+<!--                                             <th>PHONE</th> -->
                                             <th>TOTAL</th>
                                             <th>DATE</th>
                                           
@@ -43,7 +43,7 @@ integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="ano
                                               
                                                 <td><a href="{% url 'order_detail' i.order_number %}">{{ i.order_number }}</a></td>
                                                 <td>{{ i.full_name }}</td>
-                                                <td>{{ i.phone }}</td>
+<!--                                                 <td>{{ i.phone }}</td> -->
                                                 <td>{{ i.order_total }}</td> 
                                                 <td>{{ i.created_at}}</td>
                                                 
