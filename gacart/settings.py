@@ -146,6 +146,8 @@ STATICFILES_DIRS =[
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # media file configuration in database
 
 MEDIA_URL = '/media/' # path to the directory that will hold user-uploaded files.
